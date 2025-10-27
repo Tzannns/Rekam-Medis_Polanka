@@ -1,17 +1,6 @@
-<div align="right">
-
-<a href="README.md"><img src="https://flagcdn.com/w40/gb.png" width="25" alt="English"></a> |
-<a href="README-ID.md"><img src="https://flagcdn.com/w40/id.png" width="20" alt="Indonesian"></a>
-
-</div>
 
 # 🏥 Rekam Medis Akademik Polanka
 
-<div align="center">
-
-![preview](https://github.com/Ryan-infitech/Rumah-Sakit-PHP/blob/main/storage/readme/RS-PHP.gif?raw=true)
-
-</div>
 
 A comprehensive web application for managing hospital operations, appointments, and patient records built with Laravel for Politeknik Negeri Ketapang (Polanka).
 
@@ -29,8 +18,6 @@ A comprehensive web application for managing hospital operations, appointments, 
 
 ### Admin Portal
 
-![admin](./storage/readme/admin-ss.png)
-
 -   Comprehensive dashboard with real-time metrics
 -   User management (create, update, delete)
 -   Department/Poliklinik management
@@ -40,8 +27,6 @@ A comprehensive web application for managing hospital operations, appointments, 
 
 ### Staff Portal
 
-![staff](./storage/readme/staff-ss.png)
-
 -   Patient registration and management
 -   Appointment processing
 -   Queue management
@@ -50,8 +35,6 @@ A comprehensive web application for managing hospital operations, appointments, 
 
 ### Patient Portal
 
-![patient](./storage/readme/patient-ss.png)
-
 -   Appointment booking
 -   Queue tracking
 -   Medical history access
@@ -59,13 +42,6 @@ A comprehensive web application for managing hospital operations, appointments, 
 -   Profile management
 -   Service rating system
 
-## 🛠️ Technology Stack
-
-<div align="center">
-
-<a href=""><img src="https://github.com/Ryan-infitech/Rumah-Sakit-PHP/blob/main/storage/readme/Laravel%20Backend%20Framework.gif?raw=true" width="100px"></a> <a href=""><img src="https://github.com/Ryan-infitech/Rumah-Sakit-PHP/blob/main/storage/readme/JS.gif?raw=true" width="100px"></a> <a href=""><img src="https://github.com/Ryan-infitech/Rumah-Sakit-PHP/blob/main/storage/readme/Mysql%20Database.gif?raw=true" width="100px"></a>
-
-</div>
 
 ## 📋 Requirements
 
@@ -107,7 +83,7 @@ cp .env.example .env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=rumah_sakit_laravel
+DB_DATABASE=your_database
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -171,13 +147,3 @@ Detailed documentation is available in the `docs/` directory:
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👏 Acknowledgements
-
--   Laravel Community
--   Bootstrap Team
--   All contributors who have helped improve this system
