@@ -1,6 +1,12 @@
-<h3><center>RS Dr.Rian</center></h3>
-<h4><center>No Antrian</center></h4>
-<h1><center>{{ $antrian->no_antrian }}</center></h1>
+<h3>
+    <center>Polanka</center>
+</h3>
+<h4>
+    <center>No Antrian</center>
+</h4>
+<h1>
+    <center>{{ $antrian->no_antrian }}</center>
+</h1>
 <br>
 <table border="0" cellspacing="0" cellpadding="5" style="margin-left:auto;margin-right:auto;">
     <tr>
@@ -36,6 +42,6 @@
 <center>Mohon Perhatikan demi kenyamanan semua pasien</center>
 <hr>
 <center>
-<p>ANTRIAN POLIKLINIK tidak berlaku (dilewat) jika pasien datang:</p>
-<p>TIDAK SESUAI jadwal rencana kunjungan atau melewati waktu ESTIMASI.</p>
+    <p>ANTRIAN POLIKLINIK tidak berlaku (dilewat) jika pasien datang:</p>
+    <p>TIDAK SESUAI jadwal rencana kunjungan atau melewati waktu ESTIMASI.</p>
 </center>
