@@ -15,34 +15,59 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        // Check if users already exist
+        $existingUsers = DB::table('user')->count();
+        if ($existingUsers > 0) {
+            $this->command->info('Users already exist. Skipping seeder.');
+            return;
+        }
+
         // Create admin user
-        DB::table('users')->insert([
-            'name' => 'Administrator',
-            'email' => 'admin@rumahsakit.com',
-            'password' => Hash::make('admin123'),
+        $adminId = DB::table('user')->insertGetId([
+            'nama_user' => 'Administrator',
+            'username' => 'admin@polanka.com',
+            'password' => Hash::make('password'),
             'roles' => 'admin',
+            'no_telepon' => '08123456789',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         // Create test petugas user
-        DB::table('users')->insert([
-            'name' => 'Petugas Test',
-            'email' => 'petugas@rumahsakit.com',
-            'password' => Hash::make('petugas123'),
+        $petugasId = DB::table('user')->insertGetId([
+            'nama_user' => 'Petugas Test',
+            'username' => 'petugas@polanka.com',
+            'password' => Hash::make('password'),
             'roles' => 'petugas',
+            'no_telepon' => '08123456790',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         // Create test pasien user
-        DB::table('users')->insert([
-            'name' => 'Pasien Test',
-            'email' => 'pasien@rumahsakit.com',
-            'password' => Hash::make('pasien123'),
+        $pasienId = DB::table('user')->insertGetId([
+            'nama_user' => 'Pasien Test',
+            'username' => 'pasien@polanka.com',
+            'password' => Hash::make('password'),
             'roles' => 'pasien',
+            'no_telepon' => '08123456791',
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        // Create corresponding datapasien for pasien user
+        DB::table('datapasien')->insert([
+            'nama_pasien' => 'Pasien Test',
+            'email' => 'pasien@polanka.com',
+            'no_telp' => '08123456791',
+            'user_id' => $pasienId,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $this->command->info('Default users created successfully!');
+        $this->command->info('Admin: admin@polanka.com / password');
+        $this->command->info('Petugas: petugas@polanka.com / password');
+        $this->command->info('Pasien: pasien@polanka.com / password');
     }
 }

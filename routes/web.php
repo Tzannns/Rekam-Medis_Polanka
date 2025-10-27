@@ -4,6 +4,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DatauserController;
 use App\Http\Controllers\DataTables\UserDataTableController;
+use App\Http\Controllers\DataTables\DokterDataTableController;
+use App\Http\Controllers\DataTables\DatapasienDataTableController;
+use App\Http\Controllers\DataTables\PoliklinikDataTableController;
+use App\Http\Controllers\DataTables\AntrianDataTableController;
+use App\Http\Controllers\DataTables\RiwayatKunjunganDataTableController;
+use App\Http\Controllers\DataTables\RatingDataTableController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\JadwalpoliklinikController;
 use App\Http\Controllers\PasienController;
@@ -39,9 +45,11 @@ Route::get('/dashboard-pasien', [PasienController::class, 'index'])->name('dashb
 
 // Simplified Poliklinik routes
 Route::resource('poliklinik', PoliklinikController::class);
+Route::get('/poliklinik/datatable', [PoliklinikDataTableController::class, 'index'])->name('poliklinik.datatable');
 
 // Simplified Dokter routes
 Route::resource('dokter', DokterController::class);
+Route::get('/dokter/datatable', [DokterDataTableController::class, 'index'])->name('dokter.datatable');
 
 // Jadwal Poliklinik
 Route::get('/jadwalpoliklinik', [JadwalpoliklinikController::class, 'index'])->name('jadwalpoliklinik.index');
@@ -87,6 +95,7 @@ Route::middleware('auth')->group(function () {
     // Routes accessible by admin, petugas, kepala_rs
     Route::middleware(['role:admin,petugas,kepala_rs'])->group(function () {
         Route::get('/datapasien', [DatapasienController::class, 'index'])->name('pasien.index');
+        Route::get('/datapasien/datatable', [DatapasienDataTableController::class, 'index'])->name('pasien.datatable');
         Route::delete('/datapasien/{id}', [DatapasienController::class, 'destroy'])->name('pasien.destroy');
     });
     
@@ -127,6 +136,7 @@ Route::middleware(['auth'])->group(function() {
     // Laporan Pendaftaran - accessible by admin and petugas
     Route::middleware(['role:admin,petugas'])->group(function() {
         Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian.index');
+        Route::get('/antrian/datatable', [AntrianDataTableController::class, 'index'])->name('antrian.datatable');
     });
     
     // Generate PDF for specific appointment - accessible by all users
@@ -134,6 +144,7 @@ Route::middleware(['auth'])->group(function() {
     
     // Rating routes
     Route::post('/rating', [RatingController::class, 'store'])->name('rating.store');
+    Route::get('/rating/datatable', [RatingDataTableController::class, 'index'])->name('rating.datatable');
 });
 
 // Petugas Routes - accessible only by petugas
@@ -153,6 +164,8 @@ Route::middleware(['auth', 'role:admin'])->group(function() {
     // New route for patient history
     Route::get('/admin/riwayat-pasien', [AdminController::class, 'riwayatPasien'])->name('admin.riwayat-pasien');
     Route::get('/admin/riwayat-pasien/{id}', [AdminController::class, 'detailRiwayatPasien'])->name('admin.riwayat-pasien.detail');
-    Route::get('/admin/riwayat-pasien-export', [AdminController::class, 'exportRiwayatPasien'])->name('admin.riwayat-pasien.export'); Route::get('/admin/system-metrics', [SystemMetricsController::class, 'getSystemMetrics'])->name('admin.system-metrics');
+    Route::get('/admin/riwayat-pasien-export', [AdminController::class, 'exportRiwayatPasien'])->name('admin.riwayat-pasien.export');
+    Route::get('/riwayat/datatable', [RiwayatKunjunganDataTableController::class, 'index'])->name('riwayat.datatable');
+    Route::get('/admin/system-metrics', [SystemMetricsController::class, 'getSystemMetrics'])->name('admin.system-metrics');
 
 });

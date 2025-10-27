@@ -54,10 +54,10 @@ class DatapasienController extends Controller
             });
         }
         
-        // Get query results
+        // Get query results for traditional view (if needed)
         $dataPasien = $query->get();
         
-        // Display view with filtered patient data
+        // Display view with DataTables
         return view('pasien.index', compact('dataPasien'));
     }
     

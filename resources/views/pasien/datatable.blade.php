@@ -1,46 +1,43 @@
-@extends(Auth::user()->roles == 'admin' ? 'layout.admin' : (Auth::user()->roles == 'petugas' ? 'layout.petugas' : 'layout.default'))
+@extends('layout.admin')
 
-@section('title', 'Data Pasien')
+@section('title', 'Data Pasien - DataTables')
 
 @section('content')
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Data Pasien</h1>
-        @if (Auth::user()->roles == 'admin')
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Data Pasien</h1>
             <a href="{{ route('pasien.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                 <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Pasien
             </a>
-        @endif
-    </div>
-
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Pasien</h6>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="datatable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Pasien</th>
-                            <th>Email</th>
-                            <th>No. Telepon</th>
-                            <th>NIK</th>
-                            <th>Tempat Lahir</th>
-                            <th>Tanggal Lahir</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Alamat</th>
-                            <th>No. Kartu Berobat</th>
-                            <th>No. Kartu BPJS</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data will be loaded via DataTables -->
-                    </tbody>
-                </table>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Pasien dengan DataTables</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="pasien-table" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Foto</th>
+                                <th>Nama Pasien</th>
+                                <th>Email</th>
+                                <th>No Telepon</th>
+                                <th>NIK</th>
+                                <th>Tempat Lahir</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Jenis Kelamin</th>
+                                <th>No Kartu Berobat</th>
+                                <th>Tanggal Dibuat</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -61,11 +58,10 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
         $(document).ready(function() {
-            $('#datatable').DataTable({
+            $('#pasien-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -75,6 +71,12 @@
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'foto',
+                        name: 'foto',
                         orderable: false,
                         searchable: false
                     },
@@ -107,16 +109,12 @@
                         name: 'jenis_kelamin'
                     },
                     {
-                        data: 'alamat',
-                        name: 'alamat'
-                    },
-                    {
                         data: 'no_kberobat',
                         name: 'no_kberobat'
                     },
                     {
-                        data: 'no_kbpjs',
-                        name: 'no_kbpjs'
+                        data: 'created_at',
+                        name: 'created_at'
                     },
                     {
                         data: 'action',
@@ -160,32 +158,22 @@
         });
 
         function deletePasien(id) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/datapasien/' + id,
-                        type: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            $('#datatable').DataTable().ajax.reload();
-                            Swal.fire('Deleted!', 'Pasien berhasil dihapus.', 'success');
-                        },
-                        error: function(xhr) {
-                            Swal.fire('Error!', 'Terjadi kesalahan saat menghapus pasien.', 'error');
-                        }
-                    });
-                }
-            });
+            if (confirm('Apakah Anda yakin ingin menghapus pasien ini?')) {
+                $.ajax({
+                    url: '/pasien/' + id,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('#pasien-table').DataTable().ajax.reload();
+                        alert('Pasien berhasil dihapus!');
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan saat menghapus pasien!');
+                    }
+                });
+            }
         }
     </script>
 @endpush
