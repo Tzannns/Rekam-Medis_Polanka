@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DatauserController;
+use App\Http\Controllers\DataTables\UserDataTableController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\JadwalpoliklinikController;
 use App\Http\Controllers\PasienController;
@@ -67,6 +68,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // User Routes with admin middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/user', [DatauserController::class, 'index'])->name('user.index');
+    Route::get('/user/datatable', [UserDataTableController::class, 'index'])->name('user.datatable');
     Route::get('/user/create', [DatauserController::class, 'create'])->name('user.create');
     Route::post('/user/add', [DatauserController::class, 'add'])->name('user.add');
     Route::get('/user/{id}/edit', [DatauserController::class, 'edit'])->name('user.edit');

@@ -132,9 +132,17 @@ class LoginController extends Controller
                 'roles' => 'pasien', // Default role is pasien
             ]);
 
+            // Create corresponding datapasien record
+            $datapasien = \App\Models\Datapasien::create([
+                'nama_pasien' => $request->nama_user,
+                'email' => $request->username,
+                'no_telp' => $request->no_telepon,
+                'user_id' => $user->id,
+            ]);
+
             DB::commit();
             
-            Log::info('User successfully created with ID: ' . $user->id);
+            Log::info('User and Datapasien successfully created with User ID: ' . $user->id . ' and Datapasien ID: ' . $datapasien->id);
 
             // Redirect to login with success message
             return redirect()->route('login')
