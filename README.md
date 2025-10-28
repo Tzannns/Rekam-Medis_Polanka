@@ -55,8 +55,7 @@ A comprehensive web application for managing hospital operations, appointments, 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/hospital-management-system.git
-cd hospital-management-system
+git clone https://github.com/Tzannns/Rekam-Medis_Polanka.git
 ```
 
 2. **Install PHP dependencies**
