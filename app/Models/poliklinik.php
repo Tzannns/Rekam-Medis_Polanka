@@ -12,4 +12,9 @@ class poliklinik extends Model
     protected $fillable = [
         'nama_poliklinik',
     ];
+
+    public function dokter(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(dokter::class, 'poliklinik_id');
+    }
 }

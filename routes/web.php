@@ -44,12 +44,12 @@ Route::get('/dashboard-petugas', [PetugasController::class, 'index'])->name('das
 Route::get('/dashboard-pasien', [PasienController::class, 'index'])->name('dashboard-pasien');
 
 // Simplified Poliklinik routes
-Route::resource('poliklinik', PoliklinikController::class);
 Route::get('/poliklinik/datatable', [PoliklinikDataTableController::class, 'index'])->name('poliklinik.datatable');
+Route::resource('poliklinik', PoliklinikController::class);
 
 // Simplified Dokter routes
-Route::resource('dokter', DokterController::class);
 Route::get('/dokter/datatable', [DokterDataTableController::class, 'index'])->name('dokter.datatable');
+Route::resource('dokter', DokterController::class);
 
 // Jadwal Poliklinik
 Route::get('/jadwalpoliklinik', [JadwalpoliklinikController::class, 'index'])->name('jadwalpoliklinik.index');

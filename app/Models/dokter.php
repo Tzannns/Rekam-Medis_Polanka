@@ -16,7 +16,7 @@ class dokter extends Model
     
     public function poliklinik()
     {
-        return $this->belongsTo(Poliklinik::class, 'poliklinik_id');
+        return $this->belongsTo(poliklinik::class, 'poliklinik_id');
     }
     
     // Add relationship with ratings

@@ -9,6 +9,7 @@ use App\Models\dokter;
 use App\Models\Rating;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Datapasien;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -246,7 +247,27 @@ class PendaftaranController extends Controller
         
         // Generate queue number
         $no_antrian = Antrian::where('jadwalpoliklinik_id', $jadwalpoliklinik->id)->count() + 1;
-        $kode_antrian = $jadwalpoliklinik->poliklinik_id . $jadwalpoliklinik->dokter_id . $jadwalpoliklinik->id . $pendaftaran->id . $user->id . $no_antrian;
+        
+        // Determine user_id for antrian
+        // If patient registers themselves, use their user_id
+        // If admin/petugas registers patient, use patient's user_id if exists, otherwise null
+        $antrian_user_id = null;
+        if ($user->roles == 'pasien') {
+            // Patient registering themselves
+            $antrian_user_id = Auth::id();
+        } else {
+            // Admin/petugas registering patient
+            // Use patient's user_id if exists and is valid (not admin/petugas ID)
+            if ($datapasien && $datapasien->user_id) {
+                $patientUser = User::find($datapasien->user_id);
+                // Only use if it's a valid patient user (not admin/petugas)
+                if ($patientUser && $patientUser->roles == 'pasien') {
+                    $antrian_user_id = $datapasien->user_id;
+                }
+            }
+        }
+        
+        $kode_antrian = $jadwalpoliklinik->poliklinik_id . $jadwalpoliklinik->dokter_id . $jadwalpoliklinik->id . $pendaftaran->id . ($antrian_user_id ?? '0') . $no_antrian;
         
         // Get the kode value from jadwalpoliklinik table as kode_jadwalpoliklinik
         $kode_jadwal = $jadwalpoliklinik->kode ?? 'JP' . $jadwalpoliklinik->id;
@@ -266,7 +287,7 @@ class PendaftaranController extends Controller
             'penjamin' => $request->penjamin,
             'tanggal_berobat' => $jadwalpoliklinik->tanggal_praktek,
             'tanggal_reservasi' => now(),
-            'user_id' => Auth::id(),
+            'user_id' => $antrian_user_id,
             'scan_surat_rujukan' => $path,
         ];
         

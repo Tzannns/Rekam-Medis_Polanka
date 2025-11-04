@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Poliklinik;
+use App\Models\poliklinik;
 
 class PoliklinikController extends Controller
 {
@@ -14,10 +14,7 @@ class PoliklinikController extends Controller
      */
     public function index()
     {
-        $poliklinik = Poliklinik::latest()->get();
-        return view('poliklinik.index', [
-            'poliklinik' => $poliklinik
-        ]);
+        return view('poliklinik.index');
     }
 
     /**
@@ -43,7 +40,7 @@ class PoliklinikController extends Controller
         ]);
 
         try {
-            Poliklinik::create($validatedData);
+            poliklinik::create($validatedData);
             return redirect()
                 ->route('poliklinik.index')
                 ->with('success', 'Data berhasil disimpan!');
@@ -74,7 +71,7 @@ class PoliklinikController extends Controller
      */
     public function edit($id)
     {
-        $poliklinik = Poliklinik::findOrFail($id);
+        $poliklinik = poliklinik::findOrFail($id);
         return view('poliklinik.update', ['poliklinik' => $poliklinik]);
     }
 
@@ -93,7 +90,7 @@ class PoliklinikController extends Controller
         ]);
 
         // Cari poliklinik berdasarkan ID
-        $poliklinik = Poliklinik::findOrFail($id);
+        $poliklinik = poliklinik::findOrFail($id);
 
         // Update data poliklinik
         $poliklinik->nama_poliklinik = $validatedData['nama_poliklinik'];
@@ -110,15 +107,29 @@ class PoliklinikController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
-            $poliklinik = Poliklinik::findOrFail($id);
+            $poliklinik = poliklinik::findOrFail($id);
             $poliklinik->delete();
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data poliklinik berhasil dihapus!'
+                ]);
+            }
             
             return redirect()->route('poliklinik.index')
                 ->with('success', 'Data poliklinik berhasil dihapus!');
         } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menghapus data poliklinik.'
+                ], 500);
+            }
+            
             return redirect()->route('poliklinik.index')
                 ->with('error', 'Gagal menghapus data poliklinik.');
         }
